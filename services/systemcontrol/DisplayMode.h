@@ -495,6 +495,7 @@ public:
     bool getPrefHdmiDispMode(char* mode);
     void getHdrStrategy(char* value);
     void setHdrStrategy(const char* type);
+    void setDvHdrPolicy(const char* policy);
 
 private:
 
