@@ -267,6 +267,7 @@ using namespace android;
 #define UBOOTENV_HDMIMODE               "ubootenv.var.hdmimode"
 #define UBOOTENV_TESTMODE               "ubootenv.var.testmode"
 #define UBOOTENV_CVBSMODE               "ubootenv.var.cvbsmode"
+#define UBOOTENV_CVBSCABLE              "ubootenv.var.cvbscable"
 #define UBOOTENV_OUTPUTMODE             "ubootenv.var.outputmode"
 #define UBOOTENV_ISBESTMODE             "ubootenv.var.is.bestmode"
 #define UBOOTENV_BESTDOLBYVISION        "ubootenv.var.bestdolbyvision"
@@ -277,6 +278,9 @@ using namespace android;
 #define UBOOTENV_HDR_POLICY             "ubootenv.var.hdr_policy"
 
 #define UBOOTENV_REBOOT_MODE           "ubootenv.var.reboot_mode_android"
+
+#define UBOOTENV_CUSTOMWIDTH            "ubootenv.var.customwidth"
+#define UBOOTENV_CUSTOMHEIGHT           "ubootenv.var.customheight"
 
 #define UBOOTENV_SDR2HDR               "ubootenv.var.sdr2hdr"
 #define PROP_DEEPCOLOR_CTL              "persist.sys.open.deepcolor" // 8, 10, 12
@@ -681,6 +685,11 @@ private:
 #ifndef RECOVERY_MODE
     sp<SystemControlNotify> mNotifyListener;
 #endif
+    // Position Values
+    char mLeft[16];
+    char mTop[16];
+    char mWidth[16];
+    char mHeight[16];
     int mDvStatus;
 
 };

@@ -61,7 +61,6 @@ LOCAL_CFLAGS += -Wno-unused-variable -Wno-unused-parameter
 
 LOCAL_SRC_FILES:= \
   main_systemcontrol.cpp \
-  ubootenv/Ubootenv.cpp \
   VdcLoop.c \
   SysWrite.cpp \
   SystemControl.cpp \
@@ -88,6 +87,15 @@ LOCAL_SRC_FILES:= \
   VtsHalHidlTargetTestEnvBase.cpp
 
   #HDCP/aes.cpp
+
+ifeq ($(PRODUCT_BRAND), ODROID)
+LOCAL_CFLAGS += -DODROID
+LOCAL_SRC_FILES += \
+  ubootenv/Ubootenv-odroid.cpp
+else
+LOCAL_SRC_FILES += \
+  ubootenv/Ubootenv.cpp
+endif
 
 LOCAL_SHARED_LIBRARIES := \
   libsystemcontrolservice \
@@ -161,7 +169,6 @@ LOCAL_CFLAGS += -Wno-unused-variable -Wno-unused-parameter
 
 LOCAL_SRC_FILES:= \
   main_recovery.cpp \
-  ubootenv/Ubootenv.cpp \
   SysWrite.cpp \
   DisplayMode.cpp \
   SysTokenizer.cpp \
@@ -172,6 +179,15 @@ LOCAL_SRC_FILES:= \
   HDCP/HDCPTxAuth.cpp \
   FrameRateAutoAdaption.cpp \
   FormatColorDepth.cpp
+
+ifeq ($(PRODUCT_BRAND), ODROID)
+LOCAL_CFLAGS += -DODROID
+LOCAL_SRC_FILES += \
+  ubootenv/Ubootenv-odroid.cpp
+else
+LOCAL_SRC_FILES += \
+  ubootenv/Ubootenv.cpp
+endif
 
 LOCAL_STATIC_LIBRARIES := \
   libz \

@@ -67,7 +67,9 @@ private:
     bool getBootEnv(const char* key, char* value);
 
     Ubootenv *mUbootenv;
+#if !defined(ODROID)
     void getProperHdmiColorArrtibute(const char * outputmode, char * colorAttribute);
+#endif
     bool initColorAttribute(char* supportedColorList, int len);
     bool isFilterEdid();
     SysWrite mSysWrite;

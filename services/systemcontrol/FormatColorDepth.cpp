@@ -84,11 +84,17 @@ static const char* COLOR_ATTRIBUTE_LIST4[] = {
 };
 
 FormatColorDepth::FormatColorDepth(Ubootenv *ubootenv) {
+#if defined(ODROID)
+    mUbootenv = Ubootenv::getInstance();
+#else
     mUbootenv = ubootenv;
+#endif
 }
 
 FormatColorDepth::~FormatColorDepth() {
-
+#if !defined(ODROID)
+    delete mUbootenv;
+#endif
 }
 
 bool FormatColorDepth::initColorAttribute(char* supportedColorList, int len) {
@@ -132,6 +138,10 @@ void FormatColorDepth::getHdmiColorAttribute(const char* outputmode, char* color
     }
 
     if (mSysWrite.getPropertyBoolean(PROP_HDMIONLY, true)) {
+#if defined(ODROID)
+        SYS_LOGI("Only modify deep color mode, get colorAttr from ubootenv.var.colorattribute\n");
+        getBootEnv(UBOOTENV_COLORATTRIBUTE, colorAttribute);
+#else
         char curMode[MODE_LEN] = {0};
         char isBestMode[MODE_LEN] = {0};
         mSysWrite.readSysfs(SYSFS_DISPLAY_MODE, curMode);
@@ -145,12 +155,14 @@ void FormatColorDepth::getHdmiColorAttribute(const char* outputmode, char* color
         } else {
             getProperHdmiColorArrtibute(outputmode,  colorAttribute);
         }
+#endif
     }
 
     SYS_LOGI("get hdmi color attribute : [%s], outputmode is: [%s] , and support color list is: [%s]\n",
         colorAttribute, outputmode, supportedColorList);
 }
 
+#if !defined(ODROID)
 void FormatColorDepth::getProperHdmiColorArrtibute(const char* outputmode, char* colorAttribute) {
     char ubootvar[MODE_LEN] = {0};
     char tmpValue[MODE_LEN] = {0};
@@ -177,6 +189,7 @@ void FormatColorDepth::getProperHdmiColorArrtibute(const char* outputmode, char*
 
     //SYS_LOGI("get best hdmi color attribute %s\n", colorAttribute);
 }
+#endif
 
 void FormatColorDepth::getBestHdmiDeepColorAttr(const char *outputmode, char* colorAttribute) {
     char *pos = NULL;
@@ -242,6 +255,9 @@ bool FormatColorDepth::isModeSupportDeepColorAttr(const char *mode, const char *
     SYS_LOGI("isModeSupportDeepColorAttr mode = %s, color = %s",mode,color);
     strcpy(outputmode, mode);
     strcat(outputmode, color);
+    // custombuilt mode avoid the routine.
+    if(!strcmp(mode, "custombuilt"))
+        return true;
     if (isFilterEdid() && !strstr(color,"8bit")) {
         SYS_LOGI("this mode has been filtered");
         return false;

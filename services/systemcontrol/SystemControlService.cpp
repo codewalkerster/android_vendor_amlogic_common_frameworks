@@ -55,7 +55,11 @@ SystemControlService::SystemControlService(const char *path)
 
     ALOGI("SystemControlService instantiate begin");
 
+#if defined(ODROID)
+    pUbootenv = Ubootenv::getInstance();
+#else
     pUbootenv = new Ubootenv();
+#endif
     pSysWrite = new SysWrite();
 
     pDisplayMode = new DisplayMode(path, pUbootenv);

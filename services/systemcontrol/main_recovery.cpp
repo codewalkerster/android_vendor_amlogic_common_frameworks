@@ -33,7 +33,11 @@ int main(int argc, char** argv)
         path = argv[1];
     }
 
+#if defined(ODROID)
+    Ubootenv *pUbootenv = Ubootenv::getInstance();
+#else
     Ubootenv *pUbootenv = new Ubootenv();
+#endif
 
     DisplayMode displayMode(path, pUbootenv);
     displayMode.init();
