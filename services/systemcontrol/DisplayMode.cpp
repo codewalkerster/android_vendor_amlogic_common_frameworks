@@ -1367,6 +1367,10 @@ void DisplayMode::updateDefaultUI() {
         /* 3440x1440 - scaling with 21:9 ratio */
         mDisplayWidth = 2560;
         mDisplayHeight = 1080;
+    } else if (!strncmp(mDefaultUI, "3840x1080", 9)) {
+        /* 3840x1080 - scaling with 32:9 ratio */
+        mDisplayWidth = 1920;
+        mDisplayHeight = 540;
     } else if (!strncmp(mDefaultUI, "2160", 4)) {
         /* FIXME: real 4K framebuffer is too slow, so using 1080p
          * fbset(3840, 2160, 32);
@@ -1574,6 +1578,9 @@ void DisplayMode::getPosition(const char* curMode, int *position) {
     } else if (!strncmp(keyValue, "3440x1440", 9)) {
         defaultWidth = 3440;
         defaultHeight = 1440;
+    } else if (!strncmp(keyValue, "3840x1080", 9)) {
+        defaultWidth = 3840;
+        defaultHeight = 1080;
     } else if (!strncmp(keyValue, "2160", 4)) {
         defaultWidth = 3840;
         defaultHeight = 2160;
