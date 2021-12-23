@@ -1386,10 +1386,14 @@ void DisplayMode::updateDefaultUI() {
         getBootEnv(UBOOTENV_CUSTOMHEIGHT, value);
         mDisplayHeight = atoi(value);
         SYS_LOGD("%s custombuilt mDisplayHeight = %d", __func__, mDisplayHeight);
-        if (mDisplayWidth == 3840)
+        if (mDisplayWidth == 3840 && mDisplayWidth == 2160) {
             mDisplayWidth = 1920;
-        if (mDisplayHeight == 2160)
             mDisplayHeight = 1080;
+        } else if (mDisplayWidth == 3840 && mDisplayWidth == 1080) {
+            /* 3840x1080 - scaling with 32:9 ratio */
+            mDisplayWidth = 1920;
+            mDisplayHeight = 540;
+        }
     }
 #else
     if (!strncmp(mDefaultUI, "720", 3)) {

@@ -314,7 +314,7 @@ tvin_sig_fmt_t CPQControl::getVideoResolutionToFmt()
             sig_fmt = TVIN_SIG_FMT_HDMI_720X480P_60HZ;
         } else if (height > 576 && height <= 720) {
             sig_fmt = TVIN_SIG_FMT_HDMI_1280X720P_60HZ;
-        } else if (height > 720 && height <= 1088) {
+        } else if (height > 720 && height <= 1080) {
             sig_fmt = TVIN_SIG_FMT_HDMI_1920X1080P_60HZ;
         } else {
             sig_fmt = TVIN_SIG_FMT_HDMI_3840_2160_00HZ;
@@ -5597,17 +5597,24 @@ output_type_t CPQControl::CheckOutPutMode(void)
                 } else {
                     memset(tempBuf,0, sizeof(tempBuf));
                     strncpy(tempBuf, outputModeBuf, (outputModeStrSize - 5));//delete "pxxhz"
-                    outputFrameHeight = atoi(tempBuf);
+                    if (strcmp(outputModeBuf, "custombuilt") == 0) {
+                        char value[PROPERTY_VALUE_MAX];
+                        property_get("vendor.display-size", value, "1920x1080");
+                        char* ptr = strtok(value, "x");
+                        ptr = strtok(NULL, "x");
+                        outputFrameHeight = atoi(ptr);
+                    } else
+                        outputFrameHeight = atoi(tempBuf);
                 }
                 SYS_LOGD("%s: inputFrameHeight: %d, outputFrameHeight: %d!\n", __FUNCTION__, inputFrameHeight, outputFrameHeight);
                 //check outputmode
-                if (inputFrameHeight > 1088) {//inputsource is 4k
+                if (inputFrameHeight > 1080) {//inputsource is 4k
                     OutPutType = OUTPUT_TYPE_HDMI_4K;
                 } else {
                     if (inputFrameHeight >= outputFrameHeight) {//input height >= output height
                         OutPutType = OUTPUT_TYPE_HDMI_NOSCALE;
                     } else {//input height < output height
-                        if (inputFrameHeight > 720 && inputFrameHeight <= 1088) {//inputsource is 1080
+                        if (inputFrameHeight > 720 && inputFrameHeight <= 1080) {//inputsource is 1080
                             OutPutType = OUTPUT_TYPE_HDMI_NOSCALE;
                         } else if (inputFrameHeight > 576 && inputFrameHeight <= 720) {//inputsource is 720
                             if (outputFrameHeight == 4096) {
