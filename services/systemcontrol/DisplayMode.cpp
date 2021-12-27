@@ -1316,6 +1316,8 @@ void DisplayMode::setAutoSwitchFrameRate(int state) {
 
 void DisplayMode::updateDefaultUI() {
 #if defined(ODROID)
+    char value[PROPERTY_VALUE_MAX] = {0};
+    property_get("ro.product.name", value, "odroidn2");
     SYS_LOGI("%s, mDefaultUI = %s", __func__, mDefaultUI);
     if (!strncmp(mDefaultUI, "480x320", 7)) {
         mDisplayWidth = 480;
@@ -1388,9 +1390,11 @@ void DisplayMode::updateDefaultUI() {
         mDisplayWidth = 2560;
         mDisplayHeight = 1080;
     } else if (!strncmp(mDefaultUI, "3840x1080", 9)) {
-        /* 3840x1080 - scaling with 32:9 ratio */
-        mDisplayWidth = 1920;
-        mDisplayHeight = 540;
+        if (strcmp(value, "odroidn2") == 0) {
+            /* 3840x1080 - scaling with 32:9 ratio */
+            mDisplayWidth = 1920;
+            mDisplayHeight = 540;
+        }
     } else if (!strncmp(mDefaultUI, "2160", 4)) {
         /* FIXME: real 4K framebuffer is too slow, so using 1080p
          * fbset(3840, 2160, 32);
@@ -1406,10 +1410,17 @@ void DisplayMode::updateDefaultUI() {
         getBootEnv(UBOOTENV_CUSTOMHEIGHT, value);
         mDisplayHeight = atoi(value);
         SYS_LOGD("%s custombuilt mDisplayHeight = %d", __func__, mDisplayHeight);
-        if (mDisplayWidth == 3840)
+        if (mDisplayWidth == 3840 && mDisplayHeight == 2160) {
             mDisplayWidth = 1920;
         if (mDisplayHeight == 2160)
             mDisplayHeight = 1080;
+        } else if ((mDisplayWidth == 3840 && mDisplayHeight == 1080)) {
+            if (strcmp(value, "odroidn2") == 0) {
+                /* 3840x1080 - scaling with 32:9 ratio */
+                mDisplayWidth = 1920;
+                mDisplayHeight = 540;
+            }
+        }
     }
 #else
     if (!strncmp(mDefaultUI, "720", 3)) {
