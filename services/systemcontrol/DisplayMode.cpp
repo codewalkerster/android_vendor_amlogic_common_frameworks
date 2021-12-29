@@ -1412,7 +1412,6 @@ void DisplayMode::updateDefaultUI() {
         SYS_LOGD("%s custombuilt mDisplayHeight = %d", __func__, mDisplayHeight);
         if (mDisplayWidth == 3840 && mDisplayHeight == 2160) {
             mDisplayWidth = 1920;
-        if (mDisplayHeight == 2160)
             mDisplayHeight = 1080;
         } else if ((mDisplayWidth == 3840 && mDisplayHeight == 1080)) {
             if (strcmp(value, "odroidn2") == 0) {
