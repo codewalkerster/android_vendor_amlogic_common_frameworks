@@ -1370,7 +1370,7 @@ void DisplayMode::updateDefaultUI() {
         mDisplayWidth = 2560;
         mDisplayHeight = 1080;
     } else if (!strncmp(mDefaultUI, "3840x1080", 9)) {
-        if (strcmp(value, "odroidn2") == 0) {
+        if (strcmp(value, "odroidn2") == 0 || strcmp(value, "odroidn2l") == 0) {
             /* 3840x1080 - scaling with 32:9 ratio */
             mDisplayWidth = 1920;
             mDisplayHeight = 540;
@@ -1394,7 +1394,7 @@ void DisplayMode::updateDefaultUI() {
             mDisplayWidth = 1920;
             mDisplayHeight = 1080;
         } else if ((mDisplayWidth == 3840 && mDisplayHeight == 1080)) {
-            if (strcmp(value, "odroidn2") == 0) {
+            if (strcmp(value, "odroidn2") == 0 || strcmp(value, "odroidn2l") == 0) {
                 /* 3840x1080 - scaling with 32:9 ratio */
                 mDisplayWidth = 1920;
                 mDisplayHeight = 540;
