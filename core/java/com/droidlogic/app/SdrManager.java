@@ -33,6 +33,9 @@ public class SdrManager {
     public static final int MODE_OFF = 0;
     public static final int MODE_AUTO = 2;
 
+    public static final int HDR_POLICY_HDR_ON = 0;
+    public static final int HDR_POLICY_HDR_OFF = 1;
+
     private Context mContext;
     private SystemControlManager mSystemControl;
 
